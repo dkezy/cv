@@ -26,11 +26,6 @@ img {
    border-radius: 50%;
 }
 
-img:hover {
-   border: none;
-}
-
-
 /***************CLASS SELECTORS*****************/
 .gp{
    border-radius: 50%;
