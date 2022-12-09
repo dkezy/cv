@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Project</title>
+	<meta charset="UTF-8"/>
+	<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">	
+	<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;400;500;600;700&family=Texturina:opsz,wght@12..72,100;12..72,200;12..72,300;12..72,400;12..72,500;12..72,600;12..72,700;12..72,800;12..72,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./styles/main.css">
+	<link rel="icon" href="store_icon.ico">
+</head>
+
+<body>
+	<div class="right">
+		<span class="fontSetting3" id="dateArea">Date/Time</span>
+		<br />
+		<span class="fontSetting3">
+			currency:
+			<img id="currencyFlag" src="canada_flag_10.png" />
+			<select id="currencySelector" onchange="currencyChanged()">
+				<option selected value="CAD">CAD</option>
+				<option value="USD">USD</option>
+			</select>
+		</span>
+	</div>
+	<h1><span class="color">maybe</span>frills</h1>
+	<div class="slogan">COULD BE BEAT <strong>&copy</strong></div>
+	<br>
+	<fieldset>
+		<legend class="fontSetting">store items</legend>
+		<select id="displayFilter" onchange="displayStoreItems()">
+			<option>All</option>
+			<option>Fruits</option>
+			<option>Vegetables</option>
+			<option>Dairy</option>
+			<option>Eggs</option>
+			<option>Meat</option>
+			<option>Pantry</option>
+		</select>
+		<table class="fontSetting3">
+            <tr>
+                <th>id</th>
+                <th>product name</th>
+                <th>price</th>
+                <th>quantity on hand</th>
+                <th>max</th>
+                <th>category</th>
+                <th>image</th>
+            </tr>
+            <tbody id="inventoryOutput"></tbody>
+        </table>
+		<br />
+	</fieldset>
+	<br>
+	<fieldset>
+		<legend class="fontSetting">select items</legend>
+		<p class="fontSetting3">
+			Item ID: <input class="fontSetting3" type="text" id="addItemId" value="" min="0" />
+			&nbsp;
+			<span id="addIDValidationMessage"></span>
+		</p>
+		<p class="fontSetting3">
+			Qty: <input class="fontSetting3" type="number" id="addItemQty" value="" min="0" />
+			&nbsp;
+			<span id="addQtyValidationMessage"></span>
+		</p>
+		<p>
+			<input class= "fontSetting2" type="button" value="Item Details" onclick="displayItemDetails();" />
+			<input class="fontSetting2" type="button" value="Add to Cart" onclick="addItemToCart();">
+			<input class= "fontSetting2" type="button" value="Remove Item" onclick="removeItem();" />
+		</p>
+	</fieldset>	
+	<br>
+	<fieldset>
+		<legend class="fontSetting">your cart</legend>
+		<table class="fontSetting3">
+			<tr>
+				<th>id</th>
+				<th>price</th>
+				<th>quantity</th>
+				<th>subtotal</th>
+			</tr>
+			<tbody class="fontSetting3" id="cartOutput"></tbody>
+			<tbody  class="fontSetting3" id="cartCheckout"></tbody>
+
+		</table>
+	</fieldset>
+	<br>
+	<fieldset>
+		<legend class="fontSetting">review an item</legend>
+		<p class="fontSetting3" >Product ID: <input class="fontSetting3" type="text" id="reviewId" value=""/>&nbsp;<span id="reviewIdMsg"></span></p>
+		<p class="fontSetting3" >Review: <textarea class="fontSetting3" type="text" id="reviewDesc" value="" cols="50" rows="5"></textarea></p>
+		<p class="fontSetting3" >Rating out of 5: <input class="fontSetting3" type="number" id="reviewNum" value=""/>&nbsp;<span id="addRatingValidationMessage"></span></p>
+		<p> 1 - Very Bad, 2 - Bad, 3 - Good, 4 - Very Good, 5 - Excellent</p>
+		<p><input class= "fontSetting2" type="button" value="Review" onclick="reviewItems()" /></p>
+	</fieldset>
+	<div class="clear-fix"></div>
+	<footer>
+		<div class="copy">
+		  Copyright <strong>&copy</strong> 2022.
+		</div>
+		<div class="developed">
+		  Developed by
+		</div>
+		<div class="createdBy">
+			<strong>Aline Costa | Zach Lalonde | David Emmanuel | Charie Hare | Jade George</strong>
+		</div>
+		
+	  </footer>
+
+	<!-- Javascript -->
+	<script>
+
+		//Constructor Store Item Used for structuring the item data in your online store
+		function StoreItem(id, name, priceCanadian, qtyHand, maxPerCustomer, category, costOfShipping, description, image) {
+			this.storeItemid = id;
+			this.name = name;
+			this.priceCanadian = priceCanadian;
+			this.qtyHand = qtyHand;
+			this.maxPerCustomer = maxPerCustomer;
+			this.category = category;
+			this.costOfShipping = costOfShipping;
+			this.reviews = [];
+			this.description = description;
+			this.image = image;
+		}
+
+		//Constructor CartItem - Used for storing relevant item data specifically for items in the Cart
+		function CartItem(cartItemId, priceCanadian, quantity, shipping) {
+			this.cartItemId = cartItemId;
+			this.priceCanadian = priceCanadian;
+			this.quantity = quantity;
+			this.shipping = shipping;
+		}
+
+		//Constructor ReviewItem - Used for storing a review and rating
+		function ReviewItem(review, rating) {
+			this.review = review;
+			this.rating = rating;
+		}
+
+		//Global variables
+		var arrayStoreItem = [];
+		var arrayCartItem = [];
+
+		//3 - Initialize function
+		//Current date and time
+		function initialize() {
+			var date = new Date();
+			var current_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+			var current_time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+			var date_time = current_date + " / " + current_time;
+			document.getElementById("dateArea").innerHTML = date_time;
+
+			//Populate store itens
+			var item1 = new StoreItem(1, "banana", 0.78, 100, 50, "Fruits", 2.00, "Our bananas are imported from the Philippines, Ecuador, and Indonesia.", "banana.jpg");
+			var item2 = new StoreItem(2, "apple", 0.50, 200, 30, "Fruits", 3.00, "Most of our apples are locally grown but some are imported from USA and New Zealand.", "apple.jpg");
+			var item3 = new StoreItem(3, "kiwi", 6.97, 50, 60, "Fruits", 2.00, "Locally grown in Canada. Some kiwis are imported from USA and New Zealand.", "kiwi.jpg");
+			var item4 = new StoreItem(4, "potato", 1.84, 200, 30, "Vegetables", 1.50, "Russet Potatoes are versatile for creating various side dishes for your meal.", "potato.jpg");
+			var item5 = new StoreItem(5, "milk", 5.69, 62, 15, "Dairy", 1.50, "Rich in nutrients. Used in cooking, baking or simply as a wholesome beverage.", "milk.jpg");
+			var item6 = new StoreItem(6, "butter", 5.98, 40, 5, "Dairy", 1.00, "Butter is the solid mass resulting from churning freshly separated, pasteurized cream.", "butter.jpg");
+			var item7 = new StoreItem(7, "eggs", 3.68, 55, 10, "Eggs", 1.25, "Gray Ridge Super 747 Jumbo sized eggs are the largest Grade A eggs available at Ontario Walmart stores", "eggs.jpeg");
+			var item8 = new StoreItem(8, "chicken", 12, 30, 5, "Meat", 2.00, "Serve your family boneless skinless chicken breasts that have been proudly raised on Canadian farms.", "chicken.jpg");
+			var item9 = new StoreItem(9, "ground beef", 6.97, 40, 10, "Meat", 3.00, "Top quality beef. Imported from USA, Brazil, and Argentita.", "ground_beef.jpg");
+			var item10 = new StoreItem(10, "salmon", 17.59, 40, 5, "Meat", 2.00, "These tasty cuts of salmon are sustainably sourced in Canada.", "salmon.jpg");
+			var item11 = new StoreItem(11, "sausage", 4.97, 35, 6, "Meat", 1.00, "Made with Canadian pork, these fresh pork sausage links are a great complement to any hearty breakfast.", "sausage.jpg");
+			var item12 = new StoreItem(12, "pasta", 1.97, 40, 20, "Pantry", 3.00, "Made with Semolina from 100% Canadian Durum wheat, which gives our pasta its fine flavor, al dente texture and golden yellow color.", "pasta.jpg");
+			var item13 = new StoreItem(13, "rice", 5.47, 30, 5, "Pantry", 5.00, "Serve up delicious meals using Great Value Long Grain White Rice.", "rice.jpg");
+			var item14 = new StoreItem(14, "beans", 1.17, 50, 10, "Pantry", 2.50, "Try these rich, flavourful beans in a hearty sauce for the perfect complement to a variety of meals.", "beans.jpg");
+			var item15 = new StoreItem(15, "cereal", 4.47, 30, 5, "Pantry", 2.50, "Kellogg's Froot Loops cereal is part of a nutritious breakfast and contains no artificial flavours or colours, is made with Whole Grain and is a source of fibre.", "cereal.jpg");
+
+			arrayStoreItem = [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15];
+
+			displayStoreItems();
+			displayCartItems();
+		}
+
+		initialize();
+
+		//extra function - find store item
+		function findStoreItem(id) {
+			var item = null;
+			for (var i = 0; i < arrayStoreItem.length; i++) {
+				if (arrayStoreItem[i].storeItemid == id) {
+					item = arrayStoreItem[i];
+				}
+			}
+			return item;
+		}
+
+		//4 - Display Store Items function
+		function displayStoreItems() {
+			document.getElementById('inventoryOutput').innerHTML = "";
+			var selectCategory = document.getElementById('displayFilter').value;
+			var arrayStore = [];
+			for (var i = 0; i < arrayStoreItem.length; i++) {
+				if (selectCategory === "All" || selectCategory === arrayStoreItem[i].category) {
+					arrayStore.push(arrayStoreItem[i]);
+				}
+			}
+
+			var output = "";
+			for (var i = 0; i < arrayStore.length; i++) {
+				var item = arrayStore[i];
+				var price = convertPrice(item.priceCanadian);
+				output += "<tr><td>" + item.storeItemid + "</td><td>" + item.name + "</td><td>" + price.toFixed(2) + "</td><td>" 
+                    + item.qtyHand + "</td><td>" + item.maxPerCustomer + "</td><td>" + item.category + "</td><td>" + 
+                        "<img src='images/" + item.image + "' width='40px' height='40px'></td></tr>";			
+			}
+			document.getElementById('inventoryOutput').innerHTML = output;
+		}
+
+		//5 - Display Car Items function
+		function displayCartItems() {
+			document.getElementById('cartOutput').innerHTML = "";
+			if (arrayCartItem.length == 0) {
+				document.getElementById('cartOutput').innerHTML = "Cart is empty. Add items to cart.";
+			}
+			else {
+				var output = "";
+				for (var i = 0; i < arrayCartItem.length; i++) {
+					var item = arrayCartItem[i];
+					var subtotal = item.priceCanadian * item.quantity;
+					var price = convertPrice(item.priceCanadian);
+					output += "<tr><td>" + item.cartItemId + "</td><td>" + price.toFixed(2) + "</td><td>" + item.quantity + "</td><td>" + subtotal.toFixed(2) + "<br>";
+				}
+				document.getElementById('cartOutput').innerHTML = output;
+			}
+		}
+
+		//6 - Create Cart Totals
+		function calculateCartTotal() {
+			var tax = 0.13;
+			var subtotal1 = 0;
+			var estShipping = 0;
+			var subtotal2 = 0;
+			var estTax = 0;
+			var orderTotal = 0;
+
+			for (let i = 0; i < arrayCartItem.length; i++) {
+				var item = arrayCartItem[i];
+				subtotal1 += convertPrice(item.priceCanadian) * item.quantity; 
+				estShipping += convertPrice(arrayStoreItem[i].costOfShipping);
+			}
+			
+			subtotal2 = subtotal1 + estShipping;
+			estTax = subtotal2 * tax;
+			orderTotal = subtotal2 + estTax;
+
+			document.getElementById("cartCheckout").innerHTML = "Items subtotal: $" + subtotal1.toFixed(2) + "<br>" +
+			"Estimated shipping: $" + estShipping.toFixed(2) + "<br>" + "<br>" +
+			"Subtotal: $" + subtotal2.toFixed(2) + "<br>" +
+			"Estimated tax: $" + estTax.toFixed(2) + "<br>" + "<br>" +
+			"Order total: $" + orderTotal.toFixed(2); 
+		}
+
+		//7 - Currency selection
+		function convertPrice(price) {
+			var selectedCurrency = document.getElementById("currencySelector").value;
+			if (selectedCurrency == "USD") {
+				return price * 0.74;
+			}
+			else {
+				return price;
+			}
+		}
+
+		//Change currency on display
+		function currencyChanged() {
+			displayCartItems();
+			displayStoreItems();
+			flagchange();
+			calculateCartTotal()
+		}
+
+		//8 - Add to cart
+		function addItemToCart() {
+			var itemId = parseInt(document.getElementById('addItemId').value);
+			var qty = parseInt(document.getElementById('addItemQty').value);
+
+			if (isNaN(itemId) || isNaN(qty) || qty == 0) {
+				alert('Invalid item ID or quanity.');
+				return;
+			}
+
+			var storeItem = findStoreItem(itemId);
+			if (storeItem == null) {
+				alert("This item does not exist.")
+				return;
+			}
+
+			if (qty > storeItem.maxPerCustomer) {
+				alert("You can only purchase up to " + storeItem.maxPerCustomer + " of this item.");
+				return;
+			}
+
+			var cartItem = null;
+			for (var i = 0; i < arrayCartItem.length; i++) {
+				if (itemId == arrayCartItem[i].cartItemId) {
+					cartItem = arrayCartItem[i];
+				}
+			}
+
+			if (cartItem != null && cartItem.quantity + qty > storeItem.maxPerCustomer) {
+				alert("You can only purchase up to " + storeItem.maxPerCustomer + " of this item.");
+				return;
+			}
+
+			var available = storeItem.qtyHand;
+			if (cartItem != null) {
+				available -= cartItem.quantity;
+			}
+			if (qty > available) {
+				alert("Not enough products in the shop, sorry!");
+				return;
+			}
+
+			if (cartItem == null) {
+				var object = new CartItem(itemId, storeItem.priceCanadian, qty, 0);
+				arrayCartItem.push(object);
+			}
+			else {
+				cartItem.quantity += qty;
+			}
+			storeItem.qtyHand -= qty;
+			document.getElementById('addItemId').value = "";
+			document.getElementById('addItemQty').value = "";
+			displayStoreItems();
+			displayCartItems();
+			calculateCartTotal(); 
+		}	
+
+		//9 - Remove from cart
+		function removeItem() {
+			var itemIdInput = parseInt(document.getElementById("addItemId").value);
+			var itemQtyInput = parseInt(document.getElementById("addItemQty").value);
+
+			if (isNaN(itemIdInput) || isNaN(itemQtyInput) || itemQtyInput == 0) {
+				alert('Invalid item ID or quantity.');
+				return;
+			}
+
+			var itemCart = null;
+			var index = 0;
+			for (var i = 0; i < arrayCartItem.length; i++) {
+				if (arrayCartItem[i].cartItemId == itemIdInput) {
+					itemCart = arrayCartItem[i];
+					index = i;
+				}
+			}
+
+			if (itemCart == null) {
+				alert("This item is not in the cart.");
+				document.getElementById("addItemId").value = "";
+				document.getElementById("addItemQty").value = "";
+				return;
+			}
+
+			if (itemQtyInput > itemCart.quantity) {
+				alert("Quantity is more than what's in the cart.");
+				return;
+			}
+
+			var item = findStoreItem(itemIdInput);
+			item.qtyHand += itemQtyInput;
+
+			if (itemQtyInput >= itemCart.quantity) {
+				arrayCartItem.splice(index, 1);
+			}
+			else {
+				itemCart.quantity -= itemQtyInput;
+			}
+			document.getElementById("addItemId").value = "";
+			document.getElementById("addItemQty").value = "";
+			displayStoreItems();
+			displayCartItems();
+			calculateCartTotal();
+		}
+
+		//10 - Reviews Items
+		function reviewItems() {
+			var reviewId = document.getElementById("reviewId").value;
+			var item = findStoreItem(reviewId);
+			var description = document.getElementById("reviewDesc").value;
+			var rate = document.getElementById("reviewNum").value;
+
+			if (isNaN(reviewId) || reviewId == 0 ) {
+				alert('Please enter a valid item ID.');
+				return;
+			}
+			
+			if (rate > 5 || rate < 1) {
+				alert("Rate should be from 1 to 5.");
+				return;
+			}
+			
+
+			var objectReview = new ReviewItem(description, rate);
+			item.reviews.push(objectReview);
+			alert("Thank you for your review of the " + item.name + "!");
+			document.getElementById("reviewId").value = "";
+			document.getElementById("reviewDesc").value = "";
+			document.getElementById("reviewNum").value = "";
+		}
+
+		//11 - Validation
+		//All validations are inside the functions
+
+		//12 - Display Item Details
+		function displayItemDetails() {
+			var item = parseInt(document.getElementById('addItemId').value);
+			var itemDetails = findStoreItem(item);
+			var reviews = "";
+			var totalRating = 0;
+			for (var i = 0; i < itemDetails.reviews.length; i++) {
+				var arrayReview = itemDetails.reviews[i];
+				reviews += "Review " + (i+1) + ": "+ arrayReview.review + "\n";
+				totalRating += parseInt(arrayReview.rating);
+			}
+			var averageRating = parseInt(totalRating / itemDetails.reviews.length);
+
+			alert("Item details" + "\n" +
+				"Id: " + itemDetails.storeItemid + "\n" +
+				"Name: " + itemDetails.name + "\n" +
+				"Price: $" + itemDetails.priceCanadian + "\n" +
+				"Quantity on hand: " + itemDetails.qtyHand + "\n" +
+				"Maximum per customer: " + itemDetails.maxPerCustomer + "\n" +
+				"Category: " + itemDetails.category + "\n" +
+				"Shipping cost: $" + itemDetails.costOfShipping + "\n" + "\n" +
+				"Description: " + itemDetails.description + "\n" + "\n" +
+				 reviews +
+				"Average rating: " + averageRating);
+		}
+
+		//Helper function to change flag depending on currency selected
+		function flagchange() {
+			var flagofCurrency = document.getElementById("currencySelector").value;
+			if (flagofCurrency === "USD") {
+				document.getElementById("currencyFlag").src = "us_flag.png";
+			} else if (flagofCurrency === "CAD") {
+				document.getElementById("currencyFlag").src = "canada_flag_10.png";
+			}
+		}
+
+	</script>
+
+</body>
+
+</html>
