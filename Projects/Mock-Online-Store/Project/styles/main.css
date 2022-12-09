@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;400;500;600;700&family=Texturina:opsz,wght@12..72,100;12..72,200;12..72,300;12..72,400;12..72,500;12..72,600;12..72,700;12..72,800;12..72,900&display=swap');
+
+body{
+    background-color: #FFFF00;
+}
+h1{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight:900;
+    font-size:6vw;
+}
+.color{
+    color: red;
+}
+.right{
+    float: right;
+    margin-top:-4%;
+}
+.slogan{
+    font-family: 'Texturina', serif;
+    font-weight: 800;
+    font-size: 2vw;
+    margin-left: 15%;
+    margin-top:-5%
+}
+fieldset{
+background-color: white;
+  border-color: black;
+  border-radius: 15px;
+  border-width: 4px;
+  width: 55%;
+  margin-left: 22% ;
+  box-shadow: 5px 5px 2.5px red;
+  
+  
+}
+fieldset:hover{
+  box-shadow: 7px 7px 4px  rgb(48, 44, 44);
+}
+
+table, th, td {
+    border-bottom: 2px solid black;
+    border-collapse: collapse;
+    border-radius: 15px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+   
+
+  }
+  tr:hover{
+    background-color: azure ;
+  }
+  td{
+    vertical-align: center;
+  }
+
+  
+
+.fontSetting{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 4vw;
+}
+
+.fontSetting2{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2vw;
+}
+
+.fontSetting3{
+    font-family: 'Libre Franklin', sans-serif;;
+    font: weight 700;
+}
+footer {
+    margin: -10px;
+    background-color: black;
+    font-size: 19px;
+    padding: 30px;
+    color: red;
+    border-top: solid 5px red;
+    border-bottom: solid 5px red;
+  }
+
+footer .copy {
+   
+    text-align: center;
+  }
+  
+  footer .developed {
+    text-align: center;
+  }
+  
+  footer .createdBy {
+    text-align: center;
+    font-weight: 500;
+  }
+.clear-fix{
+  padding: 40px;
+}
