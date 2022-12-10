@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fuka Kido Studio</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Vinyl&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/gh/vaakash/socializer@2f749eb/css/socializer.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+</head>
+
+<body>
+
+    <header>
+
+    </header>
+
+    <div class="topnav" id="myTopnav">
+        <div class="home">
+            <a href="./index.html" class="homelink">Fuka Kido<img src="images/camera.png" class="cam-nav-bar"
+                    alt="icon of camera" style="width: 25px; height: 25px; image-rendering: pixelated;"></a>
+        </div>
+        <a href="./index.html" class="active">Home</a>
+        <a href="./info.html">Kido</a>
+        <div class="dropdown">
+            <button class="dropbtn">Stories
+            </button>
+            <div class="dropdown-content">
+                <a href="./portrait.html">Portrait</a>
+                <a href="./landscape.html">Landscape</a>
+                <a href="./sports.html">Sports</a>
+                <a href="./cars.html">Automotive</a>
+                <a href="./dogs.html">Nature</a>
+            </div>
+
+        </div>
+
+        <a href="./contact.html">Session Booking</a>
+
+
+        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+    </div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+    </script>
+    </div>
+    <!--everything from here and up are copied for default website setting-->
+
+    <div class="image-grid">
+        <img src="./images/sports/271A8798.jpg" alt="sports1">
+        <img src="./images/sports/271A9005.jpg" alt="sports2">
+        <img src="./images/sports/271A9056.jpg" alt="sports3">
+        <img src="./images/sports/271A9102.jpg" alt="sports4">
+        <img src="./images/sports/8E4A0688-Edit.jpg" alt="sports5">
+        <img src="./images/sports/8E4A1302-Edit-4.jpg" alt="sports6">
+        <img src="./images/sports/_71A5545.jpg" alt="sports7">
+        <img src="./images/sports/_71A5623.jpg" alt="sports8">
+        <img src="./images/sports/_71A5673.jpg" alt="sports9">
+        <img src="./images/sports/_71A6267.jpg" alt="sports10">
+        <img src="./images/sports/IMG_1514.jpg" alt="sports11">
+        <img src="./images/sports/IMG_1592-Edit.jpg" alt="sports12">
+        <img src="./images/sports/IMG_1696.jpg" alt="sports13">
+        <img src="./images/sports/IMG_2221.jpg" alt="sports14">
+        <img src="./images/sports/IMG_2237.jpg" alt="sports15">
+        <img src="./images/sports/IMG_2377.jpg" alt="sports16">
+        <img src="./images/sports/IMG_2429.jpg" alt="sports17">
+
+    </div>
+
+
+    <footer class="bottom-of-page">
+        <div class="copyright-info"> Copyright &copy 2022</div>
+        <br>
+        <div class="copyright-info">Developed By <b> Shin Yuk Bae | David Emmanuel </b></div>
+        <div class="socializer" data-features="32px,opacity,icon-white,pad" data-sites="instagram,facebook,twitter"
+            data-meta-link="" data-meta-title=""></div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/vaakash/socializer@2f749eb/js/socializer.min.js"></script>
+    <script>
+        (function () {
+            socializer('.socializer');
+        }());
+    </script>
+
+</body>

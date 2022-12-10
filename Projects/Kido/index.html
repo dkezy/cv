@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fuka Kido Studio</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Vinyl&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/gh/vaakash/socializer@2f749eb/css/socializer.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/gh/vaakash/socializer@2f749eb/css/socializer.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+
+</head>
+
+<body>
+
+    <header>
+
+    </header>
+    <!--navbar code-->
+    <div class="topnav" id="myTopnav">
+        <div class="home">
+            <a href="./index.html" class="homelink">Fuka Kido<img src="images/camera.png" class="cam-nav-bar"
+                    alt="icon of camera" style="width: 25px; height: 25px; image-rendering: pixelated;"></a>
+        </div>
+        <a href="./index.html" class="active">Home</a>
+        <a href="./info.html">Kido</a>
+        <div class="dropdown">
+            <button class="dropbtn">Stories
+            </button>
+            <div class="dropdown-content">
+                <a href="./portrait.html">Portrait</a>
+                <a href="./landscape.html">Landscape</a>
+                <a href="./sports.html">Sports</a>
+                <a href="./cars.html">Automotive</a>
+                <a href="./dogs.html">Nature</a>
+            </div>
+
+        </div>
+
+        <a href="./contact.html">Session Booking</a>
+
+
+        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+    </div>
+    <!--dropdown function-->
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+    </script>
+    </div>
+
+    <!--images on the main page-->
+    <div class="image-grid">
+        <img src="./images/landscape/IMG_1131.jpg" alt="main1" class="main1">
+        <img src="./images/landscape/IMG_2044-Edit.jpg" alt="main2" class="main2">
+        <img src="./images/animal/IMG_0341.jpg" alt="main3" class="main3">
+        <img src="./images/landscape/IMG_1972.jpg" alt="main4" class="main4">
+        <img src="./images/cars/IMG_2883.jpg" alt="main5" class="main5">
+        <img src="./images/sports/IMG_2377.jpg" alt="main6" class="main6">
+        <img src="./images/landscape/IMG_0746.jpg" alt="main7" class="main7">
+        <img src="./images/cars/IMG_2603.jpg" alt="main8" class="main8">
+        <img src="./images/animal/IMG_9929.jpg" alt="main9" class="main9">
+
+    </div>
+
+
+    <footer class="bottom-of-page">
+        <div class="copyright-info"> Copyright &copy 2022</div>
+        <br>
+        <div class="copyright-info">Developed By <b> Shin Yuk Bae | David Emmanuel </b></div>
+            <div class="socializer" data-features="32px,opacity,icon-white,pad" data-sites="instagram,facebook,twitter" data-meta-link="" data-meta-title=""></div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/gh/vaakash/socializer@2f749eb/js/socializer.min.js"></script>
+    <script>
+        (function () {
+            socializer('.socializer');
+        }());
+    </script>
+
+
+</body>
