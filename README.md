@@ -2,4 +2,4 @@
 
 https://dkezy.github.io/cv/ - personal website link, projects soon to be linked here!
 
-linkedin.com/in/david-emmanuel-83739a242 - LinkedIn for more Info!
+https://www.linkedin.com/in/david-emmanuel-83739a242/ - LinkedIn for more Info!
